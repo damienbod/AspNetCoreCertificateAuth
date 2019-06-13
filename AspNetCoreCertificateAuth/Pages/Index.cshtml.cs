@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -29,13 +31,20 @@ namespace AspNetCoreCertificateAuth.Pages
         {
             try
             {
-                var client = _clientFactory.CreateClient();
-
                 var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "sts_dev_cert.pfx"), "1234");
 
+                var client = _clientFactory.CreateClient();
                 client.BaseAddress = new Uri("https://localhost:44379/");
 
-                var response = await client.GetAsync("api/values");
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri("https://localhost:44379/api/values"),
+                    Method = HttpMethod.Get,
+                };
+
+                request.Headers.Add("X-ARR-ClientCert", cert.Thumbprint);
+                var response = await client.SendAsync(request);
+
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();

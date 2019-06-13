@@ -24,26 +24,35 @@ namespace AspNetCoreCertificateAuthApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<MyCertificateValidationService>();
+
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
-            .AddCertificate(options => // code from ASP.NET Core sample
-            {
-                options.Events = new CertificateAuthenticationEvents
+                .AddCertificate(options => // code from ASP.NET Core sample
                 {
-                    OnCertificateValidated = context =>
+                    options.AllowedCertificateTypes = CertificateTypes.All;
+                    options.Events = new CertificateAuthenticationEvents
                     {
-                        var claims = new[]
+                        OnCertificateValidated = context =>
                         {
-                                new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
-                                new Claim(ClaimTypes.Name, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+                            var validationService =
+                                context.HttpContext.RequestServices.GetService<MyCertificateValidationService>();
+
+                            if (validationService.ValidateCertificate(context.ClientCertificate))
+                            {
+                                var claims = new[]
+                                {
+                                    new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                    new Claim(ClaimTypes.Name, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+                                };
+
+                                context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
+                                context.Success();
                             };
 
-                        context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
-                        context.Success();
-
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
 
             services.AddAuthorization();
 
