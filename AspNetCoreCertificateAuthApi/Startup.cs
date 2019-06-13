@@ -50,7 +50,6 @@ namespace AspNetCoreCertificateAuthApi
                 .AddCertificate(options => // code from ASP.NET Core sample
                 {
                     options.AllowedCertificateTypes = CertificateTypes.All;
-                   
                     options.Events = new CertificateAuthenticationEvents
                     {
                         OnCertificateValidated = context =>
@@ -68,7 +67,11 @@ namespace AspNetCoreCertificateAuthApi
 
                                 context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
                                 context.Success();
-                            };
+                            }
+                            else
+                            {
+                                context.Fail("invalid cert");
+                            }
 
                             return Task.CompletedTask;
                         }
