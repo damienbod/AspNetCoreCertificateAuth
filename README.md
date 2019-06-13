@@ -1,5 +1,8 @@
 # AspNetCoreCertificateAuth
-ASP.NET Core 3.0 Certificate Auth
+
+Certificate Authentication in ASP.NET Core 3.0
+
+https://damienbod.com/2019/06/13/certificate-authentication-in-asp-net-core-3-0/
 
 ## Links 
 
