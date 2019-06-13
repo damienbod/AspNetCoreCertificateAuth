@@ -1,4 +1,6 @@
+using System.IO;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authorization;
@@ -26,10 +28,23 @@ namespace AspNetCoreCertificateAuthApi
         {
             services.AddSingleton<MyCertificateValidationService>();
 
+            services.AddCertificateForwarding(options =>
+            {
+                options.CertificateHeader = "X-ARR-ClientCert";
+                options.HeaderConverter = (headerValue) =>
+                {
+                    var clientCertificate = new X509Certificate2(Path.Combine("sts_dev_cert.pfx"), "1234");
+                    // = new X509Certificate2(headerValue?.)
+                    /* some weird conversion logic to create an X509Certificate2 */
+                    return clientCertificate;
+                };
+            });
+
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
                 .AddCertificate(options => // code from ASP.NET Core sample
                 {
                     options.AllowedCertificateTypes = CertificateTypes.All;
+                   
                     options.Events = new CertificateAuthenticationEvents
                     {
                         OnCertificateValidated = context =>
@@ -76,6 +91,7 @@ namespace AspNetCoreCertificateAuthApi
 
             app.UseRouting();
 
+            app.UseCertificateForwarding();
             app.UseAuthentication();
             app.UseAuthorization();
 
