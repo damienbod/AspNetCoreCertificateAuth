@@ -1,0 +1,5 @@
+/.vs
+/AspNetCoreCertificateAuth/bin
+/AspNetCoreCertificateAuth/obj
+/AspNetCoreCertificateAuthApi/bin
+/AspNetCoreCertificateAuthApi/obj
