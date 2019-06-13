@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json.Linq;
 
@@ -9,10 +12,12 @@ namespace AspNetCoreCertificateAuth.Pages
     public class IndexModel : PageModel
     {
         private readonly IHttpClientFactory _clientFactory;
+        private readonly IWebHostEnvironment _environment;
 
-        public IndexModel(IHttpClientFactory clientFactory)
+        public IndexModel(IHttpClientFactory clientFactory, IWebHostEnvironment environment)
         {
             _clientFactory = clientFactory;
+            _environment = environment;
         }
 
         public async Task OnGetAsync()
@@ -25,6 +30,8 @@ namespace AspNetCoreCertificateAuth.Pages
             try
             {
                 var client = _clientFactory.CreateClient();
+
+                var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "sts_dev_cert.pfx"), "1234");
 
                 client.BaseAddress = new Uri("https://localhost:44379/");
 
