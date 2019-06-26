@@ -23,7 +23,6 @@ namespace AspNetCoreCertificateAuthApi
                 options.ConfigureHttpsDefaults(o =>
                 {
                     o.ServerCertificate = cert;
-                    o.CheckCertificateRevocation = false;
                     o.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
                 });
             })

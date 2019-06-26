@@ -51,6 +51,7 @@ namespace AspNetCoreCertificateAuthApi
                 {
                     options.AllowedCertificateTypes = CertificateTypes.Chained;
                     options.RevocationMode = X509RevocationMode.NoCheck;
+
                     options.Events = new CertificateAuthenticationEvents
                     {
                         OnCertificateValidated = context =>
