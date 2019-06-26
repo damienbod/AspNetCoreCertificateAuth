@@ -24,10 +24,11 @@ namespace AspNetCoreCertificateAuth.Pages
 
         public async Task OnGetAsync()
         {
-            var test = await GetApiDataAsync();
+            // var selfSigned = await GetApiDataAsyncSelfSigned();
+            var chained = await GetApiDataAsyncChained(); 
         }
 
-        private async Task<JArray> GetApiDataAsync()
+        private async Task<JArray> GetApiDataAsyncSelfSigned()
         {
             try
             {
@@ -38,6 +39,39 @@ namespace AspNetCoreCertificateAuth.Pages
                 var request = new HttpRequestMessage()
                 {
                     RequestUri = new Uri("https://localhost:44379/api/values"),
+                    Method = HttpMethod.Get,
+                };
+
+                request.Headers.Add("X-ARR-ClientCert", cert.GetRawCertDataString());
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JArray.Parse(responseContent);
+
+                    return data;
+                }
+
+                throw new ApplicationException($"Status code: {response.StatusCode}, Error: {response.ReasonPhrase}");
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException($"Exception {e}");
+            }
+        }
+
+        private async Task<JArray> GetApiDataAsyncChained()
+        {
+            try
+            {
+                var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "child_a_dev_damienbod.pfx"), "1234");
+
+                var client = _clientFactory.CreateClient();
+
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri("https://localhost:44378/api/values"),
                     Method = HttpMethod.Get,
                 };
 

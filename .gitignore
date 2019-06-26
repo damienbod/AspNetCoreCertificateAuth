@@ -3,3 +3,7 @@
 /AspNetCoreCertificateAuth/obj
 /AspNetCoreCertificateAuthApi/bin
 /AspNetCoreCertificateAuthApi/obj
+/AspNetCoreCertificateAuthApiSelfSigned/bin
+/AspNetCoreCertificateAuthApiChained/obj
+/AspNetCoreCertificateAuthApiSelfSigned/obj
+/AspNetCoreCertificateAuthApiChained/bin
