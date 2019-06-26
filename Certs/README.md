@@ -26,15 +26,16 @@ Get-ChildItem -Path cert:\localMachine\my\"The thumbprint..." | Export-PfxCertif
 
 Export-Certificate -Cert cert:\localMachine\my\"The thumbprint..." -FilePath child_a_dev_damienbod.crt
 
-## Install in thr trusted root
+## Install in the trusted root
 
 https://social.msdn.microsoft.com/Forums/SqlServer/en-US/5ed119ef-1704-4be4-8a4f-ef11de7c8f34/a-certificate-chain-processed-but-terminated-in-a-root-certificate-which-is-not-trusted-by-the
 
 ## Example 
 
+$mypwdroot = ConvertTo-SecureString -String "1234" -Force -AsPlainText
 $mypwd = ConvertTo-SecureString -String "1234" -Force -AsPlainText
 
-Get-ChildItem -Path cert:\localMachine\my\0C89639E4E2998A93E423F919B36D4009A0F9991 | Export-PfxCertificate -FilePath C:\git\root_ca_dev_damienbod.pfx -Password $mypwd
+Get-ChildItem -Path cert:\localMachine\my\0C89639E4E2998A93E423F919B36D4009A0F9991 | Export-PfxCertificate -FilePath C:\git\root_ca_dev_damienbod.pfx -Password $mypwdroot
 
 Export-Certificate -Cert cert:\localMachine\my\0C89639E4E2998A93E423F919B36D4009A0F9991 -FilePath root_ca_dev_damienbod.crt
 
