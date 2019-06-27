@@ -2,17 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="3.0.0-preview6.19307.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="child_a_dev_damienbod.pfx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="child_b_from_a_dev_damienbod.pfx">
+    <None Update="root_ca_dev_damienbod.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="sts_dev_cert.pfx">

@@ -49,7 +49,7 @@ namespace AspNetCoreCertificateAuthApi
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
                 .AddCertificate(options => // code from ASP.NET Core sample
                 {
-                    options.AllowedCertificateTypes = CertificateTypes.All;
+                    options.AllowedCertificateTypes = CertificateTypes.SelfSigned;
                     options.Events = new CertificateAuthenticationEvents
                     {
                         OnCertificateValidated = context =>

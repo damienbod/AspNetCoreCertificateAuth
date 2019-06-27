@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -24,10 +25,11 @@ namespace AspNetCoreCertificateAuth.Pages
 
         public async Task OnGetAsync()
         {
-            var test = await GetApiDataAsync();
+            // var selfSigned = await GetApiDataAsyncSelfSigned();
+            var chained = await GetApiDataAsyncChained(); 
         }
 
-        private async Task<JArray> GetApiDataAsync()
+        private async Task<JArray> GetApiDataAsyncSelfSigned()
         {
             try
             {
@@ -59,5 +61,46 @@ namespace AspNetCoreCertificateAuth.Pages
                 throw new ApplicationException($"Exception {e}");
             }
         }
+
+        private async Task<JArray> GetApiDataAsyncChained()
+        {
+            try
+            {
+                // This is a child created from the root cert, must work
+                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "child_a_dev_damienbod.pfx"), "1234");
+
+                // This is a child created from the intermediate certificate which is a cert created from the root cert, must work
+                var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "child_b_from_a_dev_damienbod.pfx"), "1234");
+
+                // This is a NOT child of the root cert or the intermediate certificate, must fail
+                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "sts_dev_cert.pfx"), "1234");
+
+                var client = _clientFactory.CreateClient();
+
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri("https://localhost:44378/api/values"),
+                    Method = HttpMethod.Get,
+                };
+
+                request.Headers.Add("X-ARR-ClientCert", cert.GetRawCertDataString());
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JArray.Parse(responseContent);
+
+                    return data;
+                }
+
+                throw new ApplicationException($"Status code: {response.StatusCode}, Error: {response.ReasonPhrase}");
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException($"Exception {e}");
+            }
+        }
+
     }
 }

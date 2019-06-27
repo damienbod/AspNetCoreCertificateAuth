@@ -1,16 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuth", "AspNetCoreCertificateAuth\AspNetCoreCertificateAuth.csproj", "{ED21F60B-1535-4B84-92E9-5D76319DA0BC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuthApi", "AspNetCoreCertificateAuthApi\AspNetCoreCertificateAuthApi.csproj", "{81BDCD5E-9F16-4335-80EB-B5FC7A0D25A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E953693D-E196-4AA8-BD74-8C5D8127ED96}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuthApiChained", "AspNetCoreCertificateAuthApiChained\AspNetCoreCertificateAuthApiChained.csproj", "{FE17EDCF-C5C4-4B7C-AC01-99E372BBE952}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuthApiSelfSigned", "AspNetCoreCertificateAuthApiSelfSigned\AspNetCoreCertificateAuthApiSelfSigned.csproj", "{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +24,14 @@ Global
 		{ED21F60B-1535-4B84-92E9-5D76319DA0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED21F60B-1535-4B84-92E9-5D76319DA0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED21F60B-1535-4B84-92E9-5D76319DA0BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81BDCD5E-9F16-4335-80EB-B5FC7A0D25A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81BDCD5E-9F16-4335-80EB-B5FC7A0D25A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81BDCD5E-9F16-4335-80EB-B5FC7A0D25A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81BDCD5E-9F16-4335-80EB-B5FC7A0D25A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE17EDCF-C5C4-4B7C-AC01-99E372BBE952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE17EDCF-C5C4-4B7C-AC01-99E372BBE952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE17EDCF-C5C4-4B7C-AC01-99E372BBE952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE17EDCF-C5C4-4B7C-AC01-99E372BBE952}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
