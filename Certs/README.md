@@ -40,9 +40,9 @@ Export-Certificate -Cert cert:\localMachine\my\"The thumbprint..." -FilePath int
 ## Create Child Cert from Intermediate certificate
 
 ```
-$rootcert = ( Get-ChildItem -Path cert:\LocalMachine\My\"The thumbprint..." )
+$parentcert = ( Get-ChildItem -Path cert:\LocalMachine\My\"The thumbprint from the Intermediate certificate..." )
 
-New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "child_a_dev_damienbod.com" -Signer $rootcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "child_a_dev_damienbod.com"
+New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "child_a_dev_damienbod.com" -Signer $parentcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "child_a_dev_damienbod.com"
 
 $mypwd = ConvertTo-SecureString -String "1234" -Force -AsPlainText
 
@@ -55,7 +55,7 @@ Export-Certificate -Cert cert:\localMachine\my\"The thumbprint..." -FilePath chi
 ## Create Child Cert from Root
 
 ```
-$rootcert = ( Get-ChildItem -Path cert:\LocalMachine\My\"The thumbprint..." )
+$rootcert = ( Get-ChildItem -Path cert:\LocalMachine\My\"The thumbprint from the root cert..." )
 
 New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "child_a_dev_damienbod.com" -Signer $rootcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "child_a_dev_damienbod.com"
 
