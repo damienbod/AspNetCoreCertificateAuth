@@ -15,7 +15,29 @@ Export-Certificate -Cert cert:\localMachine\my\"The thumbprint..." -FilePath roo
 
 ```
 
-## Create Child Cert from Root
+## Install in the trusted root
+
+https://social.msdn.microsoft.com/Forums/SqlServer/en-US/5ed119ef-1704-4be4-8a4f-ef11de7c8f34/a-certificate-chain-processed-but-terminated-in-a-root-certificate-which-is-not-trusted-by-the
+
+
+## Intermediate certificate
+
+```
+
+$mypwd = ConvertTo-SecureString -String "1234" -Force -AsPlainText
+
+$parentcert = ( Get-ChildItem -Path cert:\LocalMachine\My\"The thumbprint of the root..." )
+
+New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "intermediate_dev_damienbod.com" -Signer $parentcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "intermediate_dev_damienbod.com" -KeyUsageProperty All -KeyUsage CertSign, CRLSign, DigitalSignature -TextExtension @("2.5.29.19={text}CA=1&pathlength=1")
+
+Get-ChildItem -Path cert:\localMachine\my\"The thumbprint..." | Export-PfxCertificate -FilePath C:\git\AspNetCoreCertificateAuth\Certs\intermediate_dev_damienbod.pfx -Password $mypwd
+
+Export-Certificate -Cert cert:\localMachine\my\"The thumbprint..." -FilePath intermediate_dev_damienbod.crt
+
+
+```
+
+## Create Child Cert from Intermediate certificate
 
 ```
 $rootcert = ( Get-ChildItem -Path cert:\LocalMachine\My\"The thumbprint..." )
@@ -30,28 +52,20 @@ Export-Certificate -Cert cert:\localMachine\my\"The thumbprint..." -FilePath chi
 
 ```
 
-## Install in the trusted root
-
-https://social.msdn.microsoft.com/Forums/SqlServer/en-US/5ed119ef-1704-4be4-8a4f-ef11de7c8f34/a-certificate-chain-processed-but-terminated-in-a-root-certificate-which-is-not-trusted-by-the
-
-
-## intermediate certificate
+## Create Child Cert from Root
 
 ```
+$rootcert = ( Get-ChildItem -Path cert:\LocalMachine\My\"The thumbprint..." )
+
+New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "child_a_dev_damienbod.com" -Signer $rootcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "child_a_dev_damienbod.com"
 
 $mypwd = ConvertTo-SecureString -String "1234" -Force -AsPlainText
 
-$parentcert = ( Get-ChildItem -Path cert:\LocalMachine\My\307141BC4559F23C1BA0EC672348BC74FD565571 )
+Get-ChildItem -Path cert:\localMachine\my\"The thumbprint..." | Export-PfxCertificate -FilePath C:\git\AspNetCoreCertificateAuth\Certs\child_a_dev_damienbod.pfx -Password $mypwd
 
-New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "child_b_from_a_dev_damienbod.com" -Signer $parentcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "child_b_from_a_dev_damienbod.com" -KeyUsageProperty All -KeyUsage CertSign, CRLSign, DigitalSignature
-
-Get-ChildItem -Path cert:\localMachine\my\"The thumbprint..." | Export-PfxCertificate -FilePath C:\git\AspNetCoreCertificateAuth\Certs\child_b_from_a_dev_damienbod.pfx -Password $mypwd
-
-Export-Certificate -Cert cert:\localMachine\my\"The thumbprint..." -FilePath child_b_from_a_dev_damienbod.crt
-
+Export-Certificate -Cert cert:\localMachine\my\"The thumbprint..." -FilePath child_a_dev_damienbod.crt
 
 ```
-## Example root - certificate
 
 ## Example root - Intermediate certificate - certificate
 
