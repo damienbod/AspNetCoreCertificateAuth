@@ -10,7 +10,7 @@ https://damienbod.com/2019/06/27/using-chained-certificates-for-certificate-auth
 
 
 
-[Powershell cmd for Certificates](https://github.com/damienbod/AspNetCoreCertificateAuth/blob/master/Certs/README.md)
+[Powershell documentation for cmdlets to create certificates](https://github.com/damienbod/AspNetCoreCertificateAuth/blob/master/Certs/README.md)
 
 ## Links 
 
