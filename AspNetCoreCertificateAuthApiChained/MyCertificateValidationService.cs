@@ -5,14 +5,14 @@ namespace AspNetCoreCertificateAuthApi
 {
     public class MyCertificateValidationService
     {
+        private X509Certificate2 rootCertificate = new X509Certificate2(Path.Combine("root_ca_dev_damienbod.pfx"), "1234");
+
         public bool ValidateCertificate(X509Certificate2 clientCertificate)
         {
-            return true;
-            //var cert = new X509Certificate2(Path.Combine("root_ca_dev_damienbod.pfx"), "1234");
-            //if (clientCertificate.Thumbprint == cert.Thumbprint)
-            //{
-            //    return true;
-            //}
+            if (clientCertificate.Issuer == rootCertificate.Issuer)
+            {
+                return true;
+            }
 
             return false;
         }
