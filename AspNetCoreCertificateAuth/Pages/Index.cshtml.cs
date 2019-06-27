@@ -72,14 +72,7 @@ namespace AspNetCoreCertificateAuth.Pages
                 // This is a child created from the child a cert created from the root cert, must work
                 var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "child_b_from_a_dev_damienbod.pfx"), "1234");
 
-                var chainPolicy = BuildChainPolicy(cert);
-                var chain = new X509Chain
-                {
-                    ChainPolicy = chainPolicy
-                };
-
-                var certificateIsValid = chain.Build(cert);
-
+         
                 // This is a NOT child of the root cert, must fail
                 //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "sts_dev_cert.pfx"), "1234");
 
@@ -110,34 +103,5 @@ namespace AspNetCoreCertificateAuth.Pages
             }
         }
 
-        private static readonly Oid ClientCertificateOid = new Oid("1.3.6.1.5.5.7.3.2");
-
-        private X509ChainPolicy BuildChainPolicy(X509Certificate2 certificate)
-        {
-            // Now build the chain validation options.
-            X509RevocationFlag revocationFlag = X509RevocationFlag.EntireChain;
-            X509RevocationMode revocationMode = X509RevocationMode.NoCheck;
-
-            var chainPolicy = new X509ChainPolicy
-            {
-                RevocationFlag = revocationFlag,
-                RevocationMode = revocationMode
-            };
-
-            if (false)
-            {
-                chainPolicy.ApplicationPolicy.Add(ClientCertificateOid);
-            }
-
-            if (false)
-            {
-                chainPolicy.VerificationFlags |= X509VerificationFlags.AllowUnknownCertificateAuthority;
-                chainPolicy.VerificationFlags |= X509VerificationFlags.IgnoreEndRevocationUnknown;
-                chainPolicy.ExtraStore.Add(certificate);
-            }
-
-          
-            return chainPolicy;
-        }
     }
 }
