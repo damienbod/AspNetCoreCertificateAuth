@@ -11,7 +11,7 @@ namespace AspNetCoreCertificateAuthApi
         public bool ValidateCertificate(X509Certificate2 clientCertificate)
         {
             if (clientCertificate.Issuer == rootCertificate.Issuer || 
-                clientCertificate.Issuer == intermediateCertificate.Issuer)
+                clientCertificate.Issuer == intermediateCertificate.Subject)
             {
                 return true;
             }
