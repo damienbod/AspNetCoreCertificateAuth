@@ -36,7 +36,8 @@ namespace AspNetCoreCertificateAuth.Pages
                 var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "sts_dev_cert.pfx"), "1234");
 
                 var client = _clientFactory.CreateClient();
- 
+                
+
                 var request = new HttpRequestMessage()
                 {
                     RequestUri = new Uri("https://localhost:44379/api/values"),
