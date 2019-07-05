@@ -61,6 +61,8 @@ namespace AspNetCoreCertificateAuthHandler
                 }
             }
 
+            services.AddHttpClient();
+
             services.AddHttpClient("api", c =>
             {
                 ///c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

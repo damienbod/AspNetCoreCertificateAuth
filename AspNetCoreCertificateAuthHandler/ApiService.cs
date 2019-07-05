@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
@@ -29,24 +30,27 @@ namespace AspNetCoreCertificateAuthHandler
             {
                 var clientCertificate = new X509Certificate2("child_b_from_a_dev_damienbod.pfx", "1234");
                 //var clientCertificate = new X509Certificate2("child_a_dev_damienbod.pfx", "1234");
-                
+
                 //var access_token = await _apiTokenInMemoryClient.GetApiToken(
                 //    "ProtectedApi",
                 //    "protected_scope",
                 //    "protected_secret"
                 //);
 
-                var client = _clientFactory.CreateClient("api");
-                var response = await client.GetAsync("https://localhost:44378/api/values");
+                // NOT working
+                //var client = _clientFactory.CreateClient("api");
+                //var response = await client.GetAsync("https://localhost:44378/api/values");
 
-                //var request = new HttpRequestMessage()
-                //{
-                //    RequestUri = new Uri("https://localhost:44378/api/values"),
-                //    Method = HttpMethod.Get,
-                //};
+                // working
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri("https://localhost:44378/api/values"),
+                    Method = HttpMethod.Get,
+                };
 
-                //request.Headers.Add("X-ARR-ClientCert", clientCertificate.GetRawCertDataString());
-                //var response = await client.SendAsync(request);
+                var client = _clientFactory.CreateClient();
+                request.Headers.Add("X-ARR-ClientCert", clientCertificate.GetRawCertDataString());
+                var response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
