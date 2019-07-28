@@ -12,6 +12,10 @@ https://damienbod.com/2019/06/27/using-chained-certificates-for-certificate-auth
 
 [Powershell documentation for cmdlets to create certificates](https://github.com/damienbod/AspNetCoreCertificateAuth/blob/master/Certs/README.md)
 
+## History
+
+2019-07-28 Updated Nuget packages ASP.NET Core 3.0 preview 7
+
 ## Links 
 
 https://docs.microsoft.com/en-us/aspnet/core/security/authentication/certauth?view=aspnetcore-3.0
