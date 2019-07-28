@@ -43,6 +43,7 @@ namespace AspNetCoreCertificateAuthHandler
             handler.ClientCertificates.Add(clientCertificate);
             handler.SslProtocols = SslProtocols.Tls11 | SslProtocols.Tls12;
             handler.CheckCertificateRevocationList = false;
+            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
             handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
 
             using (X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser, OpenFlags.ReadWrite))

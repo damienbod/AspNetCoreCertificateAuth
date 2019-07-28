@@ -24,6 +24,9 @@ namespace AspNetCoreCertificateAuthApi
                 {
                     o.ServerCertificate = cert;
                     o.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
+                    o.ClientCertificateValidation += (msg, cert, chain) => {
+                        return true;
+                    };
                 });
             })
             .Build();
