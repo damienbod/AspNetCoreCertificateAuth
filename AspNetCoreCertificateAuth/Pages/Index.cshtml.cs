@@ -5,10 +5,10 @@ using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json.Linq;
 
 namespace AspNetCoreCertificateAuth.Pages
 {
@@ -29,7 +29,7 @@ namespace AspNetCoreCertificateAuth.Pages
             var chained = await GetApiDataAsyncChained(); 
         }
 
-        private async Task<JArray> GetApiDataAsyncSelfSigned()
+        private async Task<JsonDocument> GetApiDataAsyncSelfSigned()
         {
             try
             {
@@ -46,7 +46,7 @@ namespace AspNetCoreCertificateAuth.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    var data = JArray.Parse(responseContent);
+                    var data = JsonDocument.Parse(responseContent);
                     return data;
                 }
 
@@ -58,7 +58,7 @@ namespace AspNetCoreCertificateAuth.Pages
             }
         }
 
-        private async Task<JArray> GetApiDataAsyncChained()
+        private async Task<JsonDocument> GetApiDataAsyncChained()
         {
             try
             {
@@ -85,7 +85,7 @@ namespace AspNetCoreCertificateAuth.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    var data = JArray.Parse(responseContent);
+                    var data = JsonDocument.Parse(responseContent);
 
                     return data;
                 }
