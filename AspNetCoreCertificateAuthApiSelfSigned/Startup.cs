@@ -25,10 +25,32 @@ namespace AspNetCoreCertificateAuthApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<MyCertificateValidationService>();
+            services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
+                .AddCertificate(options => 
+                {
+                    options.AllowedCertificateTypes = CertificateTypes.SelfSigned;
+                    options.Events = new CertificateAuthenticationEvents
+                    {
+                        OnCertificateValidated = context => {
+                            var validationService = context.HttpContext.RequestServices.GetService<MyCertificateValidationService>();
+                            if (validationService.ValidateCertificate(context.ClientCertificate))
+                            {
+                                var claims = new[] {
+                                    new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                    new Claim(ClaimTypes.Name, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+                                };
+                                context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
+                                context.Success();
+                            } else { context.Fail("invalid cert"); }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+            services.AddAuthorization();
 
             services.AddCertificateForwarding(options =>
             {
@@ -45,40 +67,6 @@ namespace AspNetCoreCertificateAuthApi
                     return clientCertificate;
                 };
             });
-
-            services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
-                .AddCertificate(options => // code from ASP.NET Core sample
-                {
-                    options.AllowedCertificateTypes = CertificateTypes.SelfSigned;
-                    options.Events = new CertificateAuthenticationEvents
-                    {
-                        OnCertificateValidated = context =>
-                        {
-                            var validationService =
-                                context.HttpContext.RequestServices.GetService<MyCertificateValidationService>();
-
-                            if (validationService.ValidateCertificate(context.ClientCertificate))
-                            {
-                                var claims = new[]
-                                {
-                                    new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
-                                    new Claim(ClaimTypes.Name, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer)
-                                };
-
-                                context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
-                                context.Success();
-                            }
-                            else
-                            {
-                                context.Fail("invalid cert");
-                            }
-
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
-
-            services.AddAuthorization();
 
             services.AddControllers();
         }
