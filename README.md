@@ -14,6 +14,8 @@ https://damienbod.com/2019/06/27/using-chained-certificates-for-certificate-auth
 
 ## History
 
+2019-12-06 Updated Nuget packages ASP.NET Core 3.1
+
 2019-10-10 Updated Nuget packages ASP.NET Core 3.0 
 
 2019-09-06 Updated Nuget packages ASP.NET Core 3.0 preview 9
