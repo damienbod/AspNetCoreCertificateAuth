@@ -98,3 +98,35 @@ Export-Certificate -Cert cert:\localMachine\my\141594A0AE38CBBECED7AF680F7945CD5
 
 
 ```
+
+## localhost Example root - Intermediate certificate - certificate
+
+```
+
+$mypwdroot = ConvertTo-SecureString -String "1234" -Force -AsPlainText
+$mypwd = ConvertTo-SecureString -String "1234" -Force -AsPlainText
+
+New-SelfSignedCertificate -DnsName "localhost", "root_localhost" -CertStoreLocation "cert:\LocalMachine\My" -NotAfter (Get-Date).AddYears(20) -FriendlyName "root_localhost" -KeyUsageProperty All -KeyUsage CertSign, CRLSign, DigitalSignature
+
+Get-ChildItem -Path cert:\localMachine\my\8E2E966A5ABED0443A57C5FEB5DF1690DBBF9CB5 | Export-PfxCertificate -FilePath C:\git\damienbod\AspNetCoreCertificateAuth\Certs\root_localhost.pfx -Password $mypwdroot
+
+Export-Certificate -Cert cert:\localMachine\my\8E2E966A5ABED0443A57C5FEB5DF1690DBBF9CB5 -FilePath root_ca_dev_damienbod.crt
+
+$rootcert = ( Get-ChildItem -Path cert:\LocalMachine\My\8E2E966A5ABED0443A57C5FEB5DF1690DBBF9CB5 )
+
+New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "localhost" -Signer $rootcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "intermediate_localhost" -KeyUsageProperty All -KeyUsage CertSign, CRLSign, DigitalSignature -TextExtension @("2.5.29.19={text}CA=1&pathlength=1")
+
+Get-ChildItem -Path cert:\localMachine\my\BEE026E73A64D58943A66451D94389FA466169A4 | Export-PfxCertificate -FilePath C:\git\damienbod\AspNetCoreCertificateAuth\Certs\intermediate_localhost.pfx -Password $mypwd
+
+Export-Certificate -Cert cert:\localMachine\my\BEE026E73A64D58943A66451D94389FA466169A4 -FilePath intermediate_localhost.crt
+
+$parentcert = ( Get-ChildItem -Path cert:\LocalMachine\My\BEE026E73A64D58943A66451D94389FA466169A4 )
+
+New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "localhost" -Signer $parentcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "client_intermediate_localhost" 
+
+Get-ChildItem -Path cert:\localMachine\my\70D38240A71DD2882B4103E703F94D0B22285B0D | Export-PfxCertificate -FilePath C:\git\damienbod\AspNetCoreCertificateAuth\Certs\client_intermediate_localhost.pfx -Password $mypwd
+
+Export-Certificate -Cert cert:\localMachine\my\70D38240A71DD2882B4103E703F94D0B22285B0D -FilePath client_intermediate_localhost.crt
+
+
+```
