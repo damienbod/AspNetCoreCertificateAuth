@@ -26,28 +26,27 @@ namespace AspNetCoreCertificateAuthApi
         {
             services.AddSingleton<MyCertificateValidationService>();
 
-            services.AddCertificateForwarding(options =>
-            {
-                options.CertificateHeader = "X-ARR-ClientCert";
-                options.HeaderConverter = (headerValue) =>
-                {
-                    X509Certificate2 clientCertificate = null;
-                    if(!string.IsNullOrWhiteSpace(headerValue))
-                    {
-                        byte[] bytes = StringToByteArray(headerValue);
-                        clientCertificate = new X509Certificate2(bytes);
-                    }
+            //services.AddCertificateForwarding(options =>
+            //{
+            //    options.CertificateHeader = "X-ARR-ClientCert";
+            //    options.HeaderConverter = (headerValue) =>
+            //    {
+            //        X509Certificate2 clientCertificate = null;
+            //        if(!string.IsNullOrWhiteSpace(headerValue))
+            //        {
+            //            byte[] bytes = StringToByteArray(headerValue);
+            //            clientCertificate = new X509Certificate2(bytes);
+            //        }
 
-                    return clientCertificate;
-                };
-            });
+            //        return clientCertificate;
+            //    };
+            //});
 
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
                 .AddCertificate(options => // code from ASP.NET Core sample
                 {
-                    options.AllowedCertificateTypes = CertificateTypes.Chained;
-                    options.RevocationMode = X509RevocationMode.NoCheck;
                     options.AllowedCertificateTypes = CertificateTypes.All;
+                    options.RevocationMode = X509RevocationMode.NoCheck;
 
                     options.Events = new CertificateAuthenticationEvents
                     {
@@ -99,7 +98,7 @@ namespace AspNetCoreCertificateAuthApi
 
             app.UseRouting();
 
-            app.UseCertificateForwarding();
+            //app.UseCertificateForwarding();
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -48,6 +48,11 @@ namespace AspNetCoreCertificateAuthApi
                    .ConfigureKestrel(options =>
                    {
                        options.Limits.MinRequestBodyDataRate = null;
+                       options.ConfigureHttpsDefaults(o =>
+                        {
+                            o.ServerCertificate = cert;
+                            o.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
+                        });
                        options.ListenLocalhost(44378, listenOptions =>
                        {
                            listenOptions.UseHttps(cert);
@@ -62,7 +67,7 @@ namespace AspNetCoreCertificateAuthApi
                        .MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
                        .MinimumLevel.Verbose()
                        .Enrich.FromLogContext()
-                       .WriteTo.File("../_ServerLogs.txt")
+                       .WriteTo.File("../_ChainedServerLogs.txt")
                        .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                    );
                 });
