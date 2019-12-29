@@ -19,7 +19,7 @@ namespace AspNetCoreCertificateAuthApi
             .UseStartup<Startup>()
             .ConfigureKestrel(options =>
             {
-                var cert = new X509Certificate2(Path.Combine("root_ca_dev_damienbod.pfx"), "1234");
+                var cert = new X509Certificate2(Path.Combine("root_localhost.pfx"), "1234");
                 options.ConfigureHttpsDefaults(o =>
                 {
                     o.ServerCertificate = cert;
