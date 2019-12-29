@@ -67,7 +67,7 @@ namespace AspNetCoreCertificateAuthApi
                        .MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
                        .MinimumLevel.Verbose()
                        .Enrich.FromLogContext()
-                       .WriteTo.File("../_ChainedServerLogs.txt")
+                       .WriteTo.File("../_chainedServerLogs.txt")
                        .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                    );
                 });
