@@ -27,15 +27,19 @@ namespace AspNetCoreCertificateAuth
                 options.CheckConsentNeeded = context => true;
             });
 
-            var clientCertificate = new X509Certificate2("../Certs/client_intermediate_localhost.pfx", "1234");
+            var clientCertificateIntermediate = new X509Certificate2("../Certs/client_intermediate_localhost.pfx", "1234");
+            var handlerClientCertificateIntermediate = new HttpClientHandler();
+            handlerClientCertificateIntermediate.ClientCertificates.Add(clientCertificateIntermediate);
 
-            var handler = new HttpClientHandler();
-            handler.ClientCertificates.Add(clientCertificate);
+            services.AddHttpClient("client_intermediate_localhost", c => {})
+                .ConfigurePrimaryHttpMessageHandler(() => handlerClientCertificateIntermediate);
 
-            services.AddHttpClient("chainedHandler", c =>
-            {
-                ///c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            }).ConfigurePrimaryHttpMessageHandler(() => handler);
+            var certificateIntermediate = new X509Certificate2("../Certs/intermediate_localhost.pfx", "1234");
+            var handlerCertificateIntermediate = new HttpClientHandler();
+            handlerCertificateIntermediate.ClientCertificates.Add(certificateIntermediate);
+
+            services.AddHttpClient("intermediate_localhost", c => { })
+                .ConfigurePrimaryHttpMessageHandler(() => handlerCertificateIntermediate);
 
             services.AddRazorPages();
         }
