@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="child_a_dev_damienbod.pfx">
+    <None Update="client_intermediate_localhost.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="child_b_from_a_dev_damienbod.pfx">
+    <None Update="intermediate_localhost.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="sts_dev_cert.pfx">

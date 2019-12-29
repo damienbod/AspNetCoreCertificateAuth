@@ -63,10 +63,10 @@ namespace AspNetCoreCertificateAuth.Pages
             try
             {
                 // This is a child created from the root cert, must work
-                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "child_a_dev_damienbod.pfx"), "1234");
+                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "intermediate_localhost.pfx"), "1234");
 
                 // This is a child created from the intermediate certificate which is a cert created from the root cert, must work
-                var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "child_b_from_a_dev_damienbod.pfx"), "1234");
+                var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "client_intermediate_localhost.pfx"), "1234");
 
                 // This is a NOT child of the root cert or the intermediate certificate, must fail
                 //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "sts_dev_cert.pfx"), "1234");
