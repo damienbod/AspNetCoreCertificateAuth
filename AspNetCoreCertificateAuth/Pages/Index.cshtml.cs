@@ -26,7 +26,8 @@ namespace AspNetCoreCertificateAuth.Pages
         public async Task OnGetAsync()
         {
             // var selfSigned = await GetApiDataAsyncSelfSigned();
-            var chained = await GetApiDataAsyncChained(); 
+            //var chained = await GetApiDataAsyncChained();
+            var chainedNamedHandler = await GetApiDataAsyncChainedNamedHandler();
         }
 
         private async Task<JsonDocument> GetApiDataAsyncSelfSigned()
@@ -98,5 +99,34 @@ namespace AspNetCoreCertificateAuth.Pages
             }
         }
 
+        private async Task<JsonDocument> GetApiDataAsyncChainedNamedHandler()
+        {
+            try
+            {
+                var client = _clientFactory.CreateClient("chainedHandler");
+
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri("https://localhost:44378/api/values"),
+                    Method = HttpMethod.Get,
+                };
+
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JsonDocument.Parse(responseContent);
+
+                    return data;
+                }
+
+                throw new ApplicationException($"Status code: {response.StatusCode}, Error: {response.ReasonPhrase}");
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException($"Exception {e}");
+            }
+        }
     }
 }

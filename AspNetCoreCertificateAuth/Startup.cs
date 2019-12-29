@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AspNetCoreCertificateAuth
 {
@@ -25,6 +27,15 @@ namespace AspNetCoreCertificateAuth
                 options.CheckConsentNeeded = context => true;
             });
 
+            var clientCertificate = new X509Certificate2("../Certs/client_intermediate_localhost.pfx", "1234");
+
+            var handler = new HttpClientHandler();
+            handler.ClientCertificates.Add(clientCertificate);
+
+            services.AddHttpClient("chainedHandler", c =>
+            {
+                ///c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            }).ConfigurePrimaryHttpMessageHandler(() => handler);
 
             services.AddRazorPages();
         }
