@@ -26,27 +26,34 @@ namespace AspNetCoreCertificateAuthApi
         {
             services.AddSingleton<MyCertificateValidationService>();
 
-            services.AddCertificateForwarding(options =>
-            {
-                options.CertificateHeader = "X-ARR-ClientCert";
-                options.HeaderConverter = (headerValue) =>
-                {
-                    X509Certificate2 clientCertificate = null;
-                    if(!string.IsNullOrWhiteSpace(headerValue))
-                    {
-                        byte[] bytes = StringToByteArray(headerValue);
-                        clientCertificate = new X509Certificate2(bytes);
-                    }
+            //services.AddCertificateForwarding(options =>
+            //{
+            //    options.CertificateHeader = "X-ARR-ClientCert";
+            //    options.HeaderConverter = (headerValue) =>
+            //    {
+            //        X509Certificate2 clientCertificate = null;
+            //        if(!string.IsNullOrWhiteSpace(headerValue))
+            //        {
+            //            byte[] bytes = StringToByteArray(headerValue);
+            //            clientCertificate = new X509Certificate2(bytes);
+            //        }
 
-                    return clientCertificate;
-                };
-            });
+            //        return clientCertificate;
+            //    };
+            //});
 
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
                 .AddCertificate(options => // code from ASP.NET Core sample
                 {
-                    options.AllowedCertificateTypes = CertificateTypes.Chained;
-                    options.RevocationMode = X509RevocationMode.NoCheck;
+                    // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/certauth
+                    options.AllowedCertificateTypes = CertificateTypes.All; 
+
+                    // Default values
+                    //options.AllowedCertificateTypes = CertificateTypes.Chained;
+                    //options.RevocationFlag = X509RevocationFlag.ExcludeRoot;
+                    //options.RevocationMode = X509RevocationMode.Online;
+                    //options.ValidateCertificateUse = true;
+                    //options.ValidateValidityPeriod = true;
 
                     options.Events = new CertificateAuthenticationEvents
                     {
@@ -98,7 +105,7 @@ namespace AspNetCoreCertificateAuthApi
 
             app.UseRouting();
 
-            app.UseCertificateForwarding();
+            //app.UseCertificateForwarding();
             app.UseAuthentication();
             app.UseAuthorization();
 

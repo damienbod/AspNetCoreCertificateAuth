@@ -5,10 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="child_a_dev_damienbod.pfx">
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00209" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.2-dev-00824" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="client_intermediate_localhost.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="child_b_from_a_dev_damienbod.pfx">
+    <None Update="intermediate_localhost.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="sts_dev_cert.pfx">

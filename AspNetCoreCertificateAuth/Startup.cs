@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AspNetCoreCertificateAuth
 {
@@ -25,6 +27,33 @@ namespace AspNetCoreCertificateAuth
                 options.CheckConsentNeeded = context => true;
             });
 
+            var clientCertificateIntermediate = new X509Certificate2("../Certs/client_intermediate_localhost.pfx", "1234");
+            var handlerClientCertificateIntermediate = new HttpClientHandler();
+            handlerClientCertificateIntermediate.ClientCertificates.Add(clientCertificateIntermediate);
+
+            services.AddHttpClient("client_intermediate_localhost", c => {})
+                .ConfigurePrimaryHttpMessageHandler(() => handlerClientCertificateIntermediate);
+
+            var certificateIntermediate = new X509Certificate2("../Certs/intermediate_localhost.pfx", "1234");
+            var handlerCertificateIntermediate = new HttpClientHandler();
+            handlerCertificateIntermediate.ClientCertificates.Add(certificateIntermediate);
+
+            services.AddHttpClient("intermediate_localhost", c => { })
+                .ConfigurePrimaryHttpMessageHandler(() => handlerCertificateIntermediate);
+
+            var selfSigned = new X509Certificate2("../Certs/sts_dev_cert.pfx", "1234");
+            var handlerSelfSigned = new HttpClientHandler();
+            handlerSelfSigned.ClientCertificates.Add(selfSigned);
+
+            services.AddHttpClient("self_signed", c => { })
+                .ConfigurePrimaryHttpMessageHandler(() => handlerSelfSigned);
+
+            var incorrectDns = new X509Certificate2("../Certs/incorrectdns.pfx", "1234");
+            var handlerIncorrectDns = new HttpClientHandler();
+            handlerIncorrectDns.ClientCertificates.Add(incorrectDns);
+
+            services.AddHttpClient("incorrect_dns", c => { })
+                .ConfigurePrimaryHttpMessageHandler(() => handlerIncorrectDns);
 
             services.AddRazorPages();
         }

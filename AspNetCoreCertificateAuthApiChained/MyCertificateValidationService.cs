@@ -15,9 +15,11 @@ namespace AspNetCoreCertificateAuthApi
         {
             var listOfValidThumbprints = new List<string>
             {
-                "141594A0AE38CBBECED7AF680F7945CD51D8F28A",
-                "0C89639E4E2998A93E423F919B36D4009A0F9991",
-                "BA9BF91ED35538A01375EFC212A2F46104B33A44"
+                "8E2E966A5ABED0443A57C5FEB5DF1690DBBF9CB5",
+                "BEE026E73A64D58943A66451D94389FA466169A4",
+                "70D38240A71DD2882B4103E703F94D0B22285B0D",
+                // valid but incorret DNS
+                "ABF302B616CDEED10C53EA2C0E07CA1616814C68"
             };
 
             if (listOfValidThumbprints.Contains(clientCertificate.Thumbprint))

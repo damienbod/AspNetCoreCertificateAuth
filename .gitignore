@@ -8,3 +8,6 @@
 /AspNetCoreCertificateAuthApiSelfSigned/obj
 /AspNetCoreCertificateAuthApiChained/bin
 /AspNetCoreCertificateAuthHandler/obj
+/AspNetCoreCertificateAuthApiChained/AspNetCoreCertificateAuthApiChained.csproj.user
+/_chainedServerLogs.txt
+/_clientLogs.txt
