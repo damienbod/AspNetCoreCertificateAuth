@@ -28,7 +28,16 @@ namespace AspNetCoreCertificateAuth.Pages
             // var selfSigned = await CallApiSelfSignedWithXARRClientCertHeader();
             var client_intermediate_localhost = await CallApiClientIntermediateLocalhost();
             var intermediate_localhost = await CallApiWithintermediateLocalhost();
-            var selfSigned = await CallApiWithSelfSigned();
+            try
+            {
+                // This cert must fail, it is trusted, but not valid checked in the cert validation event
+                var selfSigned = await CallApiWithSelfSigned();
+            }
+            catch(Exception ex)
+            {
+                var message = ex.Message;
+            }
+           
         }
 
         private async Task<JsonDocument> CallApiSelfSignedWithXARRClientCertHeader()
