@@ -25,12 +25,13 @@ namespace AspNetCoreCertificateAuth.Pages
 
         public async Task OnGetAsync()
         {
-            // var selfSigned = await GetApiDataAsyncSelfSigned();
-            //var intermediate_localhost = await GetApiDataAsyncChained();
-            var client_intermediate_localhost = await GetApiDataAsyncWithClientIntermediateLocalhost();
+            // var selfSigned = await CallApiSelfSignedWithXARRClientCertHeader();
+            var client_intermediate_localhost = await CallApiClientIntermediateLocalhost();
+            var intermediate_localhost = await CallApiWithintermediateLocalhost();
+            var selfSigned = await CallApiWithSelfSigned();
         }
 
-        private async Task<JsonDocument> GetApiDataAsyncSelfSigned()
+        private async Task<JsonDocument> CallApiSelfSignedWithXARRClientCertHeader()
         {
             try
             {
@@ -58,20 +59,13 @@ namespace AspNetCoreCertificateAuth.Pages
                 throw new ApplicationException($"Exception {e}");
             }
         }
-
-        private async Task<JsonDocument> GetApiDataAsyncChained()
+        private async Task<JsonDocument> CallApiWithSelfSigned()
         {
             try
             {
-                // This is a child created from the root cert, must work
-                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "intermediate_localhost.pfx"), "1234");
-                var client = _clientFactory.CreateClient("intermediate_localhost");
-
-                // This is a child created from the intermediate certificate which is a cert created from the root cert, must work
-                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "client_intermediate_localhost.pfx"), "1234");
-
                 // This is a NOT child of the root cert or the intermediate certificate, must fail
                 //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "sts_dev_cert.pfx"), "1234");
+                var client = _clientFactory.CreateClient("self_signed");
 
                 var request = new HttpRequestMessage()
                 {
@@ -96,11 +90,43 @@ namespace AspNetCoreCertificateAuth.Pages
                 throw new ApplicationException($"Exception {e}");
             }
         }
-
-        private async Task<JsonDocument> GetApiDataAsyncWithClientIntermediateLocalhost()
+        private async Task<JsonDocument> CallApiWithintermediateLocalhost()
         {
             try
             {
+                // This is a child created from the root cert, must work
+                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "intermediate_localhost.pfx"), "1234");
+                var client = _clientFactory.CreateClient("intermediate_localhost");
+
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri("https://localhost:44378/api/values"),
+                    Method = HttpMethod.Get,
+                };
+
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JsonDocument.Parse(responseContent);
+
+                    return data;
+                }
+
+                throw new ApplicationException($"Status code: {response.StatusCode}, Error: {response.ReasonPhrase}");
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException($"Exception {e}");
+            }
+        }
+        private async Task<JsonDocument> CallApiClientIntermediateLocalhost()
+        {
+            try
+            {
+                // This is a child created from the intermediate certificate which is a cert created from the root cert, must work
+                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "client_intermediate_localhost.pfx"), "1234");
                 var client = _clientFactory.CreateClient("client_intermediate_localhost");
 
                 var request = new HttpRequestMessage()

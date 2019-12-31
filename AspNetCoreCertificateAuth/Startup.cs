@@ -41,6 +41,13 @@ namespace AspNetCoreCertificateAuth
             services.AddHttpClient("intermediate_localhost", c => { })
                 .ConfigurePrimaryHttpMessageHandler(() => handlerCertificateIntermediate);
 
+            var selfSigned = new X509Certificate2("../Certs/sts_dev_cert.pfx", "1234");
+            var handlerSelfSigned = new HttpClientHandler();
+            handlerSelfSigned.ClientCertificates.Add(certificateIntermediate);
+
+            services.AddHttpClient("self_signed", c => { })
+                .ConfigurePrimaryHttpMessageHandler(() => handlerSelfSigned);
+
             services.AddRazorPages();
         }
 
