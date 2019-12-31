@@ -128,5 +128,11 @@ Get-ChildItem -Path cert:\localMachine\my\70D38240A71DD2882B4103E703F94D0B22285B
 
 Export-Certificate -Cert cert:\localMachine\my\70D38240A71DD2882B4103E703F94D0B22285B0D -FilePath client_intermediate_localhost.crt
 
+New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname "incorrectdns" -Signer $parentcert -NotAfter (Get-Date).AddYears(20) -FriendlyName "incorrectdns" 
+
+Get-ChildItem -Path cert:\localMachine\my\ABF302B616CDEED10C53EA2C0E07CA1616814C68 | Export-PfxCertificate -FilePath C:\git\damienbod\AspNetCoreCertificateAuth\Certs\incorrectdns.pfx -Password $mypwd
+
+Export-Certificate -Cert cert:\localMachine\my\ABF302B616CDEED10C53EA2C0E07CA1616814C68 -FilePath incorrectdns.crt
+
 
 ```
