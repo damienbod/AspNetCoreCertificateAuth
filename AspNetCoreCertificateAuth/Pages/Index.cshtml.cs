@@ -37,7 +37,17 @@ namespace AspNetCoreCertificateAuth.Pages
             {
                 var message = ex.Message;
             }
-           
+
+            try
+            {
+                // This cert must fail, it is trusted, but not an incorrect dns
+                var incorrectDns = await CallApiWithincorrectDns();
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+            
         }
 
         private async Task<JsonDocument> CallApiSelfSignedWithXARRClientCertHeader()
@@ -137,6 +147,38 @@ namespace AspNetCoreCertificateAuth.Pages
                 // This is a child created from the intermediate certificate which is a cert created from the root cert, must work
                 //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "client_intermediate_localhost.pfx"), "1234");
                 var client = _clientFactory.CreateClient("client_intermediate_localhost");
+
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri("https://localhost:44378/api/values"),
+                    Method = HttpMethod.Get,
+                };
+
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JsonDocument.Parse(responseContent);
+
+                    return data;
+                }
+
+                throw new ApplicationException($"Status code: {response.StatusCode}, Error: {response.ReasonPhrase}");
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException($"Exception {e}");
+            }
+        }
+
+        private async Task<JsonDocument> CallApiWithincorrectDns()
+        {
+            try
+            {
+                // This is is created for the incorrect DNS, must fail
+                //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "incorrectdns.pfx"), "1234");
+                var client = _clientFactory.CreateClient("incorrect_dns");
 
                 var request = new HttpRequestMessage()
                 {

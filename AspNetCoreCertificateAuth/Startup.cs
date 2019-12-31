@@ -48,6 +48,13 @@ namespace AspNetCoreCertificateAuth
             services.AddHttpClient("self_signed", c => { })
                 .ConfigurePrimaryHttpMessageHandler(() => handlerSelfSigned);
 
+            var incorrectDns = new X509Certificate2("../Certs/incorrectdns.pfx", "1234");
+            var handlerIncorrectDns = new HttpClientHandler();
+            handlerIncorrectDns.ClientCertificates.Add(incorrectDns);
+
+            services.AddHttpClient("incorrect_dns", c => { })
+                .ConfigurePrimaryHttpMessageHandler(() => handlerIncorrectDns);
+
             services.AddRazorPages();
         }
 
