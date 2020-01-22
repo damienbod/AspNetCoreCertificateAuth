@@ -27,11 +27,11 @@ namespace AspNetCoreCertificateAuth
                 options.CheckConsentNeeded = context => true;
             });
 
-            var clientCertificateIntermediate = new X509Certificate2("../Certs/client_intermediate_localhost.pfx", "1234");
+            var clientCertificateIntermediate = new X509Certificate2("../Certs/client.pfx", "1234");
             var handlerClientCertificateIntermediate = new HttpClientHandler();
             handlerClientCertificateIntermediate.ClientCertificates.Add(clientCertificateIntermediate);
 
-            services.AddHttpClient("client_intermediate_localhost", c => {})
+            services.AddHttpClient("client", c => {})
                 .ConfigurePrimaryHttpMessageHandler(() => handlerClientCertificateIntermediate);
 
             var certificateIntermediate = new X509Certificate2("../Certs/intermediate_localhost.pfx", "1234");

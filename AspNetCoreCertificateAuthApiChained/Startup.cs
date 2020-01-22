@@ -46,7 +46,8 @@ namespace AspNetCoreCertificateAuthApi
                 .AddCertificate(options => // code from ASP.NET Core sample
                 {
                     // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/certauth
-                    options.AllowedCertificateTypes = CertificateTypes.All; 
+                    options.AllowedCertificateTypes = CertificateTypes.All;
+                    options.RevocationMode = X509RevocationMode.NoCheck;
 
                     // Default values
                     //options.AllowedCertificateTypes = CertificateTypes.Chained;

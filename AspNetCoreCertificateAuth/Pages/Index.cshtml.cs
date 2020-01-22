@@ -27,7 +27,16 @@ namespace AspNetCoreCertificateAuth.Pages
         {
             // var selfSigned = await CallApiSelfSignedWithXARRClientCertHeader();
             var client_intermediate_localhost = await CallApiClientIntermediateLocalhost();
-            var intermediate_localhost = await CallApiWithintermediateLocalhost();
+            try
+            {
+                // This cert must fail, wrong certificate type, extension is missing for client auth
+                var intermediate_localhost = await CallApiWithintermediateLocalhost();
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+        
             try
             {
                 // This cert must fail, it is trusted, but not valid checked in the cert validation event
@@ -146,7 +155,7 @@ namespace AspNetCoreCertificateAuth.Pages
             {
                 // This is a child created from the intermediate certificate which is a cert created from the root cert, must work
                 //var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "client_intermediate_localhost.pfx"), "1234");
-                var client = _clientFactory.CreateClient("client_intermediate_localhost");
+                var client = _clientFactory.CreateClient("client");
 
                 var request = new HttpRequestMessage()
                 {
@@ -171,7 +180,6 @@ namespace AspNetCoreCertificateAuth.Pages
                 throw new ApplicationException($"Exception {e}");
             }
         }
-
         private async Task<JsonDocument> CallApiWithincorrectDns()
         {
             try
