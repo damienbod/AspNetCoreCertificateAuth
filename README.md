@@ -14,6 +14,8 @@ https://damienbod.com/2019/06/27/using-chained-certificates-for-certificate-auth
 
 ## History
 
+2020-01-22 Updated certificates, now using CertificateManager
+
 2019-01-02 Updated HttpClient certificate handling, improved certificates in demo
 
 2019-12-06 Updated Nuget packages ASP.NET Core 3.1
@@ -27,6 +29,8 @@ https://damienbod.com/2019/06/27/using-chained-certificates-for-certificate-auth
 2019-07-28 Updated Nuget packages ASP.NET Core 3.0 preview 7
 
 ## Links 
+
+https://github.com/damienbod/AspNetCoreCertificates
 
 https://docs.microsoft.com/en-us/aspnet/core/security/authentication/certauth?view=aspnetcore-3.0
 
