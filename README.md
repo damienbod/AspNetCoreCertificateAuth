@@ -9,9 +9,6 @@ Using Chained Certificates for Certificate Authentication in ASP.NET Core 3.1
 https://damienbod.com/2019/06/27/using-chained-certificates-for-certificate-authentication-in-asp-net-core-3-0/
 
 
-
-[Powershell documentation for cmdlets to create certificates](https://github.com/damienbod/AspNetCoreCertificateAuth/blob/master/Certs/README.md)
-
 ## History
 
 2020-01-22 Updated certificates, now using CertificateManager
@@ -63,3 +60,5 @@ https://tools.ietf.org/html/rfc3280.html
 https://github.com/aspnet/AspNetCore/tree/master/src/Security/Authentication/Certificate/src
 
 https://tools.ietf.org/html/rfc5246#section-7.4.4
+
+[Powershell documentation for cmdlets to create certificates](https://github.com/damienbod/AspNetCoreCertificateAuth/blob/master/Certs/README.md)
