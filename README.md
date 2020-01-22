@@ -1,4 +1,4 @@
-# AspNetCoreCertificateAuth
+# ASP.NET Core Certificate Authentication
 
 Certificate Authentication in ASP.NET Core 3.1 (Self Signed)
 
@@ -8,6 +8,9 @@ Using Chained Certificates for Certificate Authentication in ASP.NET Core 3.1
 
 https://damienbod.com/2019/06/27/using-chained-certificates-for-certificate-authentication-in-asp-net-core-3-0/
 
+Certificate Manager
+
+https://github.com/damienbod/AspNetCoreCertificates
 
 ## History
 
