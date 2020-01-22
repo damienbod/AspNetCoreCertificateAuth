@@ -11,3 +11,5 @@
 /AspNetCoreCertificateAuthApiChained/AspNetCoreCertificateAuthApiChained.csproj.user
 /_chainedServerLogs.txt
 /_clientLogs.txt
+/CreateChainedCertificates/bin/
+/CreateChainedCertificates/obj

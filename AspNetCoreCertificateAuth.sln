@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.705
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuth", "AspNetCoreCertificateAuth\AspNetCoreCertificateAuth.csproj", "{ED21F60B-1535-4B84-92E9-5D76319DA0BC}"
 EndProject
@@ -13,6 +13,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuthApiChained", "AspNetCoreCertificateAuthApiChained\AspNetCoreCertificateAuthApiChained.csproj", "{FE17EDCF-C5C4-4B7C-AC01-99E372BBE952}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuthApiSelfSigned", "AspNetCoreCertificateAuthApiSelfSigned\AspNetCoreCertificateAuthApiSelfSigned.csproj", "{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateChainedCertificates", "CreateChainedCertificates\CreateChainedCertificates.csproj", "{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
