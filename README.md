@@ -1,3 +1,5 @@
+SEE: https://github.com/damienbod/AspNetCoreCertificates/tree/main/examplesUsingCertificateAuthentication/AzureCertAuth
+
 # ASP.NET Core Certificate Authentication
 
 Certificate Authentication in ASP.NET Core 3.1 (Self Signed)
